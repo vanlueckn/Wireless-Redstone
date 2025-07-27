@@ -7,11 +7,12 @@ import com.troblecodings.tcredstone.block.BlockRedstoneAcceptor;
 import com.troblecodings.tcredstone.init.GIRCInit;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class TileRedstoneEmitter extends BlockEntity implements ILinkableTile {
 
@@ -37,21 +38,21 @@ public class TileRedstoneEmitter extends BlockEntity implements ILinkableTile {
     public static BlockPos readBlockPosFromNBT(final CompoundTag compound) {
         if (compound != null && compound.contains(ID_X) && compound.contains(ID_Y)
                 && compound.contains(ID_Z))
-            return new BlockPos(compound.getInt(ID_X), compound.getInt(ID_Y),
-                    compound.getInt(ID_Z));
+            return new BlockPos(compound.getInt(ID_X).get(), compound.getInt(ID_Y).get(),
+                    compound.getInt(ID_Z).get());
         return null;
     }
 
     @Override
-    protected void loadAdditional(final CompoundTag compound, final Provider provider) {
-        super.loadAdditional(compound, provider);
-        this.linkedpos = readBlockPosFromNBT(compound);
+    protected void loadAdditional(final ValueInput input) {
+        super.loadAdditional(input);
+        this.linkedpos = readBlockPosFromNBT(input);
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag compound, final Provider provider) {
-        super.saveAdditional(compound, provider);
-        writeBlockPosToNBT(linkedpos, compound);
+    protected void saveAdditional(final ValueOutput output) {
+        super.saveAdditional(output);
+        writeBlockPosToNBT(linkedpos, output);
     }
 
     @Override

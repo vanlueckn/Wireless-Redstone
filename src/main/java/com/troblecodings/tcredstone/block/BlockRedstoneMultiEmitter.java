@@ -8,13 +8,14 @@ import com.troblecodings.tcredstone.tile.TileRedstoneMultiEmitter;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class BlockRedstoneMultiEmitter extends BlockRedstoneEmitter implements Message {
@@ -29,13 +30,13 @@ public class BlockRedstoneMultiEmitter extends BlockRedstoneEmitter implements M
     }
 
     @Override
-    public ItemInteractionResult useItemOn(final ItemStack stack, final BlockState state,
+    public InteractionResult useItemOn(final ItemStack stack, final BlockState state,
             final Level world, final BlockPos pos, final Player player, final InteractionHand hand,
             final BlockHitResult hit) {
         if (world.isClientSide)
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         if (player.getItemInHand(hand).getItem().equals(GIRCInit.RS_LINKER.get()))
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         final BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof TileRedstoneMultiEmitter) {
             final TileRedstoneMultiEmitter emitter = (TileRedstoneMultiEmitter) entity;
@@ -52,14 +53,14 @@ public class BlockRedstoneMultiEmitter extends BlockRedstoneEmitter implements M
                             blockpos.getX(), blockpos.getY(), blockpos.getZ()));
                 }
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     public void neighborChanged(final BlockState state, final Level world, final BlockPos pos,
-            final Block blockIn, final BlockPos fromPos, final boolean isMoving) {
+            final Block blockIn, final Orientation orientation, final boolean isMoving) {
         if (world.isClientSide)
             return;
         final BlockEntity entity = world.getBlockEntity(pos);

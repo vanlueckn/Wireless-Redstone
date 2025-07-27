@@ -10,7 +10,6 @@ import com.troblecodings.tcredstone.block.BlockRedstoneAcceptor;
 import com.troblecodings.tcredstone.init.GIRCInit;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
@@ -19,6 +18,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class TileRedstoneMultiEmitter extends BlockEntity implements ILinkableTile {
 
@@ -83,15 +84,15 @@ public class TileRedstoneMultiEmitter extends BlockEntity implements ILinkableTi
     }
 
     @Override
-    public void loadAdditional(final CompoundTag compound, final Provider provider) {
-        super.loadAdditional(compound, provider);
-        this.listOfPositions = readBlockPosFromNBT(compound);
+    protected void loadAdditional(final ValueInput input) {
+        super.loadAdditional(input);
+        this.listOfPositions = readBlockPosFromNBT(input);
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag compound, final Provider provider) {
-        super.saveAdditional(compound, provider);
-        writeBlockPosToNBT(listOfPositions, compound);
+    protected void saveAdditional(final ValueOutput output) {
+        super.saveAdditional(output);
+        writeBlockPosToNBT(listOfPositions, output);
     }
 
     public void redstoneUpdate(final boolean enabled) {
