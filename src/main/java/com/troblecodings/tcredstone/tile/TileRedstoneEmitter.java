@@ -9,7 +9,8 @@ import com.troblecodings.tcredstone.init.TCInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -43,15 +44,15 @@ public class TileRedstoneEmitter extends BlockEntity implements ILinkableTile {
     }
 
     @Override
-    protected void readNbt(final NbtCompound compound, final WrapperLookup wrapperLookup) {
-        super.readNbt(compound, wrapperLookup);
-        this.linkedpos = readBlockPosFromNBT(compound);
+    protected void readData(final ReadView readView) {
+        super.readData(readView);
+        this.linkedpos = readBlockPosFromNBT(readView);
     }
 
     @Override
-    protected void writeNbt(final NbtCompound compound, final WrapperLookup wrapperLookup) {
-        super.writeNbt(compound, wrapperLookup);
-        writeBlockPosToNBT(linkedpos, compound);
+    protected void writeData(final WriteView writeView) {
+        super.writeData(writeView);
+        writeBlockPosToNBT(linkedpos, writeView);
     }
 
     @Override

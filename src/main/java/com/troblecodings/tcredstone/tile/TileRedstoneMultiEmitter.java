@@ -16,7 +16,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -83,15 +84,15 @@ public class TileRedstoneMultiEmitter extends BlockEntity implements ILinkableTi
     }
 
     @Override
-    protected void readNbt(final NbtCompound compound, final WrapperLookup wrapperLookup) {
-        super.readNbt(compound, wrapperLookup);
-        this.listOfPositions = readBlockPosFromNBT(compound);
+    protected void readData(final ReadView readView) {
+        super.readData(readView);
+        this.listOfPositions = readBlockPosFromNBT(readView);
     }
 
     @Override
-    protected void writeNbt(final NbtCompound compound, final WrapperLookup wrapperLookup) {
-        super.writeNbt(compound, wrapperLookup);
-        writeBlockPosToNBT(listOfPositions, compound);
+    protected void writeData(final WriteView writeView) {
+        super.writeData(writeView);
+        writeBlockPosToNBT(listOfPositions, writeView);
     }
 
     public void redstoneUpdate(final boolean enabled) {
